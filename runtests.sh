@@ -20,15 +20,6 @@ then
 else
   echo "Running all tests..."
 fi
-# clear out the existing Indy wallet if arg passed in
-# if [[ "$1" == "--clean"  ]]; then
-# 	echo "cleaning Indy Wallet..."
-# 	rm -rf ~/.indy_client
-# elif [ -n "$1"] then
-# 	echo "run tests in $1"
-# else
-# 	echo "Running all tests..."
-# fi
 
 # Build indy pool
 docker build -f network/indy-pool.dockerfile -t indy-pool . --platform linux/amd64

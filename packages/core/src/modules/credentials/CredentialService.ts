@@ -134,11 +134,16 @@ export class CredentialServiceV2 implements CredentialService {
 
   private credentialService: V1CredentialService
   private connectionService: ConnectionService
+  private messageSender: MessageSender
 
-  constructor(connectionService: ConnectionService, credentialService: V1CredentialService) {
+  constructor(connectionService: ConnectionService, 
+              credentialService: V1CredentialService,
+              messageSender: MessageSender) {
     this.credentialService = credentialService
     this.connectionService = connectionService
+    this.messageSender = messageSender
   }
+
 
   private getFormatService(): CredentialFormatService {
     return new CredentialFormatServiceV2()
@@ -150,16 +155,32 @@ export class CredentialServiceV2 implements CredentialService {
 
     logger.debug(">> IN SERVICE V2")
 
-    const props: CredentialRecordProps = { state: CredentialState.ProposalSent, threadId: "1" };
-    const credentialRecord = new CredentialRecord(props)
-    const proposalMessage = new AgentMessage();
+    const connection = await this.connectionService.getById(proposal.connectionId)
 
-    // return { credentialRecord: credentialRecord, message: message }
+    if (proposal?.credentialFormats.indy?.attributes) {
+      proposal.credentialFormats.indy.credentialProposal = new CredentialPreview({ attributes: proposal?.credentialFormats.indy?.attributes })
+    }
+
+    const config: CredentialProposeOptions = {
+      credentialProposal: proposal.credentialFormats.indy?.credentialProposal,
+      credentialDefinitionId: proposal.credentialFormats.indy?.credentialDefinitionId,
+    }
+
+    logger.debug("Create Proposal")
+    const { credentialRecord, message } = await this.credentialService.createProposal(connection, config)
+
+    const outbound = createOutboundMessage(connection, message)
+
+    logger.debug("Send Proposal to Issuer")
+    await this.messageSender.sendMessage(outbound)
+
+    return { credentialRecord, message }
   }
 
 
 }
 
+// TODO move into separate file
 @scoped(Lifecycle.ContainerScoped)
 export class CredentialAPI extends CredentialsModule implements CredentialsAPI {
   private credentialRepository: CredentialRepository
