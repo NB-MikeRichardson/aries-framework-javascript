@@ -1,20 +1,20 @@
-import type { AgentConfig } from '../../../agent/AgentConfig'
-import type { Handler, HandlerInboundMessage } from '../../../agent/Handler'
-import type { CredentialResponseCoordinator } from '../CredentialResponseCoordinator'
-import type { CredentialRecord } from '../repository/CredentialRecord'
-import type { CredentialService } from '../services'
+import type { AgentConfig } from '../../../../agent/AgentConfig'
+import type { Handler, HandlerInboundMessage } from '../../../../agent/Handler'
+import type { CredentialResponseCoordinator } from '../../CredentialResponseCoordinator'
+import type { CredentialRecord } from '../../repository/CredentialRecord'
+import type { V1CredentialService } from '..'
 
-import { createOutboundMessage, createOutboundServiceMessage } from '../../../agent/helpers'
+import { createOutboundMessage, createOutboundServiceMessage } from '../../../../agent/helpers'
 import { RequestCredentialMessage } from '../messages'
 
 export class RequestCredentialHandler implements Handler {
   private agentConfig: AgentConfig
-  private credentialService: CredentialService
+  private credentialService: V1CredentialService
   private credentialResponseCoordinator: CredentialResponseCoordinator
   public supportedMessages = [RequestCredentialMessage]
 
   public constructor(
-    credentialService: CredentialService,
+    credentialService: V1CredentialService,
     agentConfig: AgentConfig,
     credentialResponseCoordinator: CredentialResponseCoordinator
   ) {

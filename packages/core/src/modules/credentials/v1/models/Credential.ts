@@ -3,7 +3,7 @@ import type { IndyCredential } from 'indy-sdk'
 import { Expose, Type } from 'class-transformer'
 import { IsInstance, IsOptional, ValidateNested } from 'class-validator'
 
-import { JsonTransformer } from '../../../utils/JsonTransformer'
+import { JsonTransformer } from '../../../../utils/JsonTransformer'
 
 import { IndyCredentialInfo } from './IndyCredentialInfo'
 import { RevocationInterval } from './RevocationInterval'

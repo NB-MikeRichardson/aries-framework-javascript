@@ -1,4 +1,4 @@
-import type { Attachment } from '../../../decorators/attachment/Attachment'
+import type { Attachment } from '../../../../decorators/attachment/Attachment'
 
 export interface CredentialInfoOptions {
   metadata?: IndyCredentialMetadata | null

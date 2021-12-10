@@ -1,9 +1,9 @@
-import type { Attachment } from '../../../decorators/attachment/Attachment'
+import type { Attachment } from '../../../../decorators/attachment/Attachment'
 
 import { Expose, Type } from 'class-transformer'
 import { Equals, IsInstance, IsOptional, IsString, ValidateNested } from 'class-validator'
 
-import { AgentMessage } from '../../../agent/AgentMessage'
+import { AgentMessage } from '../../../../agent/AgentMessage'
 
 import { CredentialPreview } from './CredentialPreview'
 

@@ -1,7 +1,7 @@
 import type { AutoAcceptCredential } from './CredentialAutoAcceptType'
-import type { OfferCredentialMessage, CredentialPreview } from './messages'
+import type { OfferCredentialMessage, CredentialPreview } from './v1/messages'
 import type { CredentialRecord } from './repository/CredentialRecord'
-import type { CredentialOfferTemplate, CredentialProposeOptions } from './services'
+import type { CredentialOfferTemplate, CredentialProposeOptions } from './v1'
 
 import { Lifecycle, scoped } from 'tsyringe'
 
@@ -22,13 +22,13 @@ import {
   OfferCredentialHandler,
   ProposeCredentialHandler,
   RequestCredentialHandler,
-} from './handlers'
-import { CredentialService } from './services'
+} from './v1/handlers'
+import { V1CredentialService } from './v1'
 
 @scoped(Lifecycle.ContainerScoped)
 export class CredentialsModule {
   private connectionService: ConnectionService
-  private credentialService: CredentialService
+  private credentialService: V1CredentialService
   private messageSender: MessageSender
   private agentConfig: AgentConfig
   private credentialResponseCoordinator: CredentialResponseCoordinator
@@ -37,7 +37,7 @@ export class CredentialsModule {
   public constructor(
     dispatcher: Dispatcher,
     connectionService: ConnectionService,
-    credentialService: CredentialService,
+    credentialService: V1CredentialService,
     messageSender: MessageSender,
     agentConfig: AgentConfig,
     credentialResponseCoordinator: CredentialResponseCoordinator,
@@ -60,16 +60,17 @@ export class CredentialsModule {
    * @param config Additional configuration to use for the proposal
    * @returns Credential record associated with the sent proposal message
    */
-  public async proposeCredential(connectionId: string, config?: CredentialProposeOptions) {
-    const connection = await this.connectionService.getById(connectionId)
+  // REPLACED BY V2 API
+  // public async proposeCredential(connectionId: string, config?: CredentialProposeOptions) {
+  //   const connection = await this.connectionService.getById(connectionId)
 
-    const { message, credentialRecord } = await this.credentialService.createProposal(connection, config)
+  //   const { message, credentialRecord } = await this.credentialService.createProposal(connection, config)
 
-    const outbound = createOutboundMessage(connection, message)
-    await this.messageSender.sendMessage(outbound)
+  //   const outbound = createOutboundMessage(connection, message)
+  //   await this.messageSender.sendMessage(outbound)
 
-    return credentialRecord
-  }
+  //   return credentialRecord
+  // }
 
   /**
    * Accept a credential proposal as issuer (by sending a credential offer message) to the connection

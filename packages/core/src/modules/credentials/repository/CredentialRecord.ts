@@ -14,8 +14,8 @@ import {
   OfferCredentialMessage,
   ProposeCredentialMessage,
   RequestCredentialMessage,
-} from '../messages'
-import { CredentialInfo } from '../models/CredentialInfo'
+} from '../v1/messages'
+import { CredentialInfo } from '../v1/models/CredentialInfo'
 
 export interface CredentialRecordProps {
   id?: string

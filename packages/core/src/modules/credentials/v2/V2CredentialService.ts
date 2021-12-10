@@ -5,7 +5,7 @@ import type { LinkedAttachment } from '../../../utils/LinkedAttachment'
 import type { ConnectionRecord } from '../../connections'
 import type { AutoAcceptCredential } from '../CredentialAutoAcceptType'
 import type { CredentialStateChangedEvent } from '../CredentialEvents'
-import type { ProposeCredentialMessageOptions } from '../messages'
+import type { ProposeCredentialMessageOptions } from '../v1/messages'
 import type { CredReqMetadata } from 'indy-sdk'
 
 import { scoped, Lifecycle } from 'tsyringe'
@@ -34,7 +34,7 @@ import {
   RequestCredentialMessage,
   CredentialAckMessage,
   INDY_CREDENTIAL_ATTACHMENT_ID,
-} from '../messages'
+} from '../v1/messages'
 import { CredentialRepository } from '../repository'
 import { CredentialRecord } from '../repository/CredentialRecord'
 

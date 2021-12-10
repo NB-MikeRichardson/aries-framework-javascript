@@ -1,23 +1,23 @@
-import type { AgentConfig } from '../../../agent/AgentConfig'
-import type { Handler, HandlerInboundMessage } from '../../../agent/Handler'
-import type { MediationRecipientService } from '../../routing/services/MediationRecipientService'
-import type { CredentialResponseCoordinator } from '../CredentialResponseCoordinator'
-import type { CredentialRecord } from '../repository/CredentialRecord'
-import type { CredentialService } from '../services'
+import type { AgentConfig } from '../../../../agent/AgentConfig'
+import type { Handler, HandlerInboundMessage } from '../../../../agent/Handler'
+import type { MediationRecipientService } from '../../../routing/services/MediationRecipientService'
+import type { CredentialResponseCoordinator } from '../../CredentialResponseCoordinator'
+import type { CredentialRecord } from '../../repository/CredentialRecord'
+import type { V1CredentialService } from '..'
 
-import { createOutboundMessage, createOutboundServiceMessage } from '../../../agent/helpers'
-import { ServiceDecorator } from '../../../decorators/service/ServiceDecorator'
+import { createOutboundMessage, createOutboundServiceMessage } from '../../../../agent/helpers'
+import { ServiceDecorator } from '../../../../decorators/service/ServiceDecorator'
 import { OfferCredentialMessage } from '../messages'
 
 export class OfferCredentialHandler implements Handler {
-  private credentialService: CredentialService
+  private credentialService: V1CredentialService
   private agentConfig: AgentConfig
   private credentialResponseCoordinator: CredentialResponseCoordinator
   private mediationRecipientService: MediationRecipientService
   public supportedMessages = [OfferCredentialMessage]
 
   public constructor(
-    credentialService: CredentialService,
+    credentialService: V1CredentialService,
     agentConfig: AgentConfig,
     credentialResponseCoordinator: CredentialResponseCoordinator,
     mediationRecipientService: MediationRecipientService

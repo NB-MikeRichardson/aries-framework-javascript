@@ -536,13 +536,13 @@ export async function setupCredentialTests(
   await aliceAgent.initialize()
 
   const {
-    schema: { id: schemaId },
+    schema,
     definition: { id: credDefId },
   } = await prepareForIssuance(faberAgent, ['name', 'age', 'profile_picture', 'x-ray'])
 
   const [faberConnection, aliceConnection] = await makeConnection(faberAgent, aliceAgent)
 
-  return { faberAgent, aliceAgent, credDefId, schemaId, faberConnection, aliceConnection }
+  return { faberAgent, aliceAgent, credDefId, schema, faberConnection, aliceConnection }
 }
 
 export async function setupProofsTest(faberName: string, aliceName: string, autoAcceptProofs?: AutoAcceptProof) {

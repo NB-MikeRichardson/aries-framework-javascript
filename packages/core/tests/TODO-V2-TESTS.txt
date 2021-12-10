@@ -1,0 +1,6 @@
+    credentials.tests.ts => 'Alice starts with credential proposal, with attachments, to Faber'
+    credentials.tests.ts => 'Alice starts with credential proposal to Faber'
+
+    credentials-auto-accept.tests.ts => 'Alice starts with credential proposal to Faber, both with autoAcceptCredential on `always`'
+    credentials-auto-accept.tests.ts => 'Alice starts with credential proposal to Faber, both with autoAcceptCredential on `contentApproved`'
+    credentials-auto-accept.tests.ts => 'Alice starts with credential proposal to Faber, both have autoAcceptCredential on `contentApproved` and attributes did change'
