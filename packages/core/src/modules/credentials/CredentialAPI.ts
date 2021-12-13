@@ -1,4 +1,3 @@
-
 import type { CredentialProposeOptions } from './v1'
 import type { CredentialRecord } from './repository/CredentialRecord'
 import type { ConnectionRecord } from '../connections'

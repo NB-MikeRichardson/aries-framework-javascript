@@ -56,11 +56,9 @@ describe('credentials', () => {
   })
 
 
-
-  test('Alice starts with credential proposal to Faber', async () => {
+  test('Alice starts with V1 credential proposal to Faber', async () => {
     testLogger.test('Alice sends (v1) credential proposal to Faber')
     // set the propose options
-    // we should set the version to V1.0 and V2.0 in separate tests, one as a regression test
     const proposeOptions: ProposeCredentialOptions = {
       connectionId: aliceConnection.id,
       protocolVersion: CredentialProtocolVersion.V1_0,
@@ -205,6 +203,153 @@ describe('credentials', () => {
     proposeOptions.comment = "v2 Indy propose credential test"
 
     credentialExchangeRecord = await aliceAgent.credentials.proposeCredential(proposeOptions)
+
+  })
+
+  test('Alice starts with V2 credential proposal to Faber', async () => {
+    testLogger.test('Alice sends (v2) credential proposal to Faber')
+    // set the propose options
+    // we should set the version to V1.0 and V2.0 in separate tests, one as a regression test
+    const proposeOptions: ProposeCredentialOptions = {
+      connectionId: aliceConnection.id,
+      protocolVersion: CredentialProtocolVersion.V2_0,
+      credentialFormats: {
+        indy: {
+          attributes: credentialPreview.attributes,
+          schemaIssuerDid: faberAgent.publicDid?.did,
+          schemaName: schema.name,
+          schemaVersion: schema.version,
+          schemaId: schema.id,
+          issuerDid: faberAgent.publicDid?.did,
+          credentialDefinitionId: credDefId,
+          linkedAttachments: [
+            new LinkedAttachment({
+              name: 'profile_picture',
+              attachment: new Attachment({
+                mimeType: 'image/png',
+                data: new AttachmentData({ base64: 'base64encodedpic' }),
+              }),
+            }),
+          ],
+
+        }
+      },
+      comment: "v2 propose credential test"
+    }
+    testLogger.test('Alice sends (v2, Indy) credential proposal to Faber')
+
+    let credentialExchangeRecord = await aliceAgent.credentials.proposeCredential(proposeOptions)
+
+    logger.debug("CredentialExchangeRecord = ", credentialExchangeRecord)
+    expect(credentialExchangeRecord.connectionId).toEqual(proposeOptions.connectionId)
+    expect(credentialExchangeRecord.protocolVersion).toEqual(CredentialProtocolVersion.V2_0)
+    expect(credentialExchangeRecord.state).toEqual(CredentialState.ProposalSent)
+    expect(credentialExchangeRecord.role).toEqual(CredentialRole.Holder)
+    expect(credentialExchangeRecord.threadId).not.toBeNull()
+
+    testLogger.test('Faber waits for credential proposal from Alice')
+    let faberCredentialRecord = await waitForCredentialRecord(faberAgent, {
+      threadId: credentialExchangeRecord.threadId,
+      state: CredentialState.ProposalReceived,
+    })
+
+    // testLogger.test('Faber sends credential offer to Alice')
+    // faberCredentialRecord = await faberAgent.credentials.acceptProposal(faberCredentialRecord.id, {
+    //   comment: 'some comment about credential',
+    // })
+
+    // testLogger.test('Alice waits for credential offer from Faber')
+    // aliceCredentialRecord = await waitForCredentialRecord(aliceAgent, {
+    //   threadId: faberCredentialRecord.threadId,
+    //   state: CredentialState.OfferReceived,
+    // })
+
+    // expect(JsonTransformer.toJSON(aliceCredentialRecord)).toMatchObject({
+    //   createdAt: expect.any(Date),
+    //   offerMessage: {
+    //     '@id': expect.any(String),
+    //     '@type': 'https://didcomm.org/issue-credential/1.0/offer-credential',
+    //     comment: 'some comment about credential',
+    //     credential_preview: {
+    //       '@type': 'https://didcomm.org/issue-credential/1.0/credential-preview',
+    //       attributes: [
+    //         {
+    //           name: 'name',
+    //           'mime-type': 'text/plain',
+    //           value: 'John',
+    //         },
+    //         {
+    //           name: 'age',
+    //           'mime-type': 'text/plain',
+    //           value: '99',
+    //         },
+    //       ],
+    //     },
+    //     'offers~attach': expect.any(Array),
+    //   },
+    //   state: CredentialState.OfferReceived,
+    // })
+
+    // // below values are not in json object
+    // expect(aliceCredentialRecord.id).not.toBeNull()
+    // expect(aliceCredentialRecord.getTags()).toEqual({
+    //   threadId: faberCredentialRecord.threadId,
+    //   connectionId: aliceCredentialRecord.connectionId,
+    //   state: aliceCredentialRecord.state,
+    // })
+    // expect(aliceCredentialRecord.type).toBe(CredentialRecord.name)
+
+    // testLogger.test('Alice sends credential request to Faber')
+    // aliceCredentialRecord = await aliceAgent.credentials.acceptOffer(aliceCredentialRecord.id)
+
+    // testLogger.test('Faber waits for credential request from Alice')
+    // faberCredentialRecord = await waitForCredentialRecord(faberAgent, {
+    //   threadId: aliceCredentialRecord.threadId,
+    //   state: CredentialState.RequestReceived,
+    // })
+
+    // testLogger.test('Faber sends credential to Alice')
+    // faberCredentialRecord = await faberAgent.credentials.acceptRequest(faberCredentialRecord.id)
+
+    // testLogger.test('Alice waits for credential from Faber')
+    // aliceCredentialRecord = await waitForCredentialRecord(aliceAgent, {
+    //   threadId: faberCredentialRecord.threadId,
+    //   state: CredentialState.CredentialReceived,
+    // })
+
+    // testLogger.test('Alice sends credential ack to Faber')
+    // aliceCredentialRecord = await aliceAgent.credentials.acceptCredential(aliceCredentialRecord.id)
+
+    // testLogger.test('Faber waits for credential ack from Alice')
+    // faberCredentialRecord = await waitForCredentialRecord(faberAgent, {
+    //   threadId: faberCredentialRecord.threadId,
+    //   state: CredentialState.Done,
+    // })
+
+    // expect(aliceCredentialRecord).toMatchObject({
+    //   type: CredentialRecord.name,
+    //   id: expect.any(String),
+    //   createdAt: expect.any(Date),
+    //   threadId: expect.any(String),
+    //   connectionId: expect.any(String),
+    //   offerMessage: expect.any(Object),
+    //   requestMessage: expect.any(Object),
+    //   credentialId: expect.any(String),
+    //   state: CredentialState.Done,
+    // })
+
+    // expect(faberCredentialRecord).toMatchObject({
+    //   type: CredentialRecord.name,
+    //   id: expect.any(String),
+    //   createdAt: expect.any(Date),
+    //   threadId: expect.any(String),
+    //   connectionId: expect.any(String),
+    //   offerMessage: expect.any(Object),
+    //   requestMessage: expect.any(Object),
+    //   state: CredentialState.Done,
+    // })
+
+   
 
   })
 

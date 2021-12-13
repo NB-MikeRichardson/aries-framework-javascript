@@ -323,7 +323,7 @@ export async function ensurePublicDidIsOnLedger(agent: Agent, publicDid: string)
   try {
     testLogger.test(`Ensure test DID ${publicDid} is written to ledger`)
     await agent.ledger.getPublicDid(publicDid)
-  } catch (error) {
+  } catch (error: any) {
     // Unfortunately, this won't prevent from the test suite running because of Jest runner runs all tests
     // regardless of thrown errors. We're more explicit about the problem with this error handling.
     throw new Error(`Test DID ${publicDid} is not written on ledger or ledger is not available: ${error.message}`)

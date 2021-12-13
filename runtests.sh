@@ -38,6 +38,14 @@ docker exec indy-pool add-did-from-seed 000000000000000000000000Trustee9 TRUSTEE
 # Run all tests
 # You can run the tests using the following command.
 
+if [[ -n "$1" ]]
+then
+  echo "===================================================="
+  echo ">>>>> run tests in $1 <<<<<"
+  echo "===================================================="
+
+fi
+
 yarn test $1
 
 # to run ony files in a specific folder use something like the following example:
