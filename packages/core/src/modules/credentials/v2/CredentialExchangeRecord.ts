@@ -5,6 +5,8 @@ import { CredentialProtocolVersion } from '../CredentialProtocolVersion'
 import { CredentialRole } from './CredentialRole'
 import { CredentialState } from '../CredentialState'
 
+
+
 export interface CredentialRecordTags {
   threadId: string
   protocolVersion: CredentialProtocolVersion
@@ -15,6 +17,10 @@ export interface CredentialRecordTags {
 export enum CredentialRecordType {
   INDY,
   W3C,
+}
+export enum W3CFormatType {
+  JSONLD 
+  // others to follow
 }
 
 export interface CredentialRecordBinding {
@@ -30,7 +36,6 @@ export interface CredentialExchangeRecord {
   // protocolVersion is the protocol version being used for the credential exchange
   protocolVersion: CredentialProtocolVersion
 
-  // self-explanatory
   threadId: string
 
   // enum as defined in Issue Credential V2 protocol
@@ -49,3 +54,6 @@ export interface CredentialExchangeRecord {
   // Therefore we use the CredentialRecordBinding interface to specify the credential // record id, as well as the type.
   credentials: CredentialRecordBinding[]
 }
+
+
+

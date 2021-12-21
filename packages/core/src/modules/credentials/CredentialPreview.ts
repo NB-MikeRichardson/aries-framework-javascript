@@ -1,8 +1,9 @@
 import { Expose, Transform, Type } from 'class-transformer'
 import { Equals, IsInstance, IsMimeType, IsOptional, IsString, ValidateNested } from 'class-validator'
 
-import { JsonTransformer } from '../../../../utils/JsonTransformer'
-import { replaceLegacyDidSovPrefix } from '../../../../utils/messageType'
+import { JsonTransformer } from '../../utils/JsonTransformer'
+import { replaceLegacyDidSovPrefix } from '../../utils/messageType'
+import { CredentialProtocolVersion } from './CredentialProtocolVersion'
 
 interface CredentialPreviewAttributeOptions {
   name: string
@@ -47,10 +48,18 @@ export interface CredentialPreviewOptions {
  * @see https://github.com/hyperledger/aries-rfcs/blob/master/features/0036-issue-credential/README.md#preview-credential
  */
 export class CredentialPreview {
-  public constructor(options: CredentialPreviewOptions) {
+  private static version: string = CredentialProtocolVersion.V1_0 
+
+  public constructor(options: CredentialPreviewOptions, version? :CredentialProtocolVersion) {
     if (options) {
       this.attributes = options.attributes
     }
+
+    if (version) {
+      CredentialPreview.version = version
+      CredentialPreview.type = `https://didcomm.org/issue-credential/${CredentialPreview.version}/credential-preview`
+    }
+    
   }
 
   @Expose({ name: '@type' })
@@ -58,8 +67,8 @@ export class CredentialPreview {
   @Transform(({ value }) => replaceLegacyDidSovPrefix(value), {
     toClassOnly: true,
   })
-  public readonly type = CredentialPreview.type
-  public static readonly type = 'https://didcomm.org/issue-credential/1.0/credential-preview'
+  public type = CredentialPreview.type
+  public static type = `https://didcomm.org/issue-credential/1.0/credential-preview`
 
   @Type(() => CredentialPreviewAttribute)
   @ValidateNested({ each: true })
@@ -79,7 +88,7 @@ export class CredentialPreview {
    *   age: "20"
    * })
    */
-  public static fromRecord(record: Record<string, string>) {
+  public static fromRecord(record: Record<string, string>, version?: CredentialProtocolVersion) {
     const attributes = Object.entries(record).map(
       ([name, value]) =>
         new CredentialPreviewAttribute({
@@ -91,6 +100,6 @@ export class CredentialPreview {
 
     return new CredentialPreview({
       attributes,
-    })
+    }, version)
   }
 }

@@ -1,7 +1,7 @@
 import { AnyJson } from '../../generic'
 import { CredentialProtocolVersion } from '../CredentialProtocolVersion'
 import { LinkedAttachment } from '../../../utils/LinkedAttachment'
-import { CredentialPreview, CredentialPreviewAttribute } from '../v1/messages/CredentialPreview'
+import { CredentialPreviewAttribute } from '../CredentialPreview'
 import type { AutoAcceptCredential } from '../CredentialAutoAcceptType'
 
 
@@ -65,7 +65,7 @@ interface AcceptOfferOptions {
 }
 
 interface NegotiateOfferOptions {
-  credentialRecordId: string
+  credentialRecordId: string  
   credentialFormats: OfferCredentialFormats
   autoAcceptCredential?: AutoAcceptCredential
   comment?: string
@@ -74,8 +74,7 @@ interface NegotiateOfferOptions {
 /// CREDENTIAL PROPOSAL
 
 interface IndyProposeCredentialFormat {
-  credentialProposal?: CredentialPreview // Controversial: this is needed by ProposeCredentialMessage in the CredentialRecord
-  attributes?: CredentialPreviewAttribute[] // TODO do we need to change this to be called CredentialIndyAttribute?
+  attributes?: CredentialPreviewAttribute[] 
   schemaIssuerDid?: string
   schemaName?: string
   schemaVersion?: string
@@ -83,7 +82,6 @@ interface IndyProposeCredentialFormat {
   issuerDid?: string
   credentialDefinitionId?: string
   linkedAttachments?: LinkedAttachment[]
-  attachments?: Attachment[]
 }
 
 export interface ProposeCredentialFormats {
@@ -97,6 +95,7 @@ export interface ProposeCredentialFormats {
 
 
 interface ProposeCredentialOptions {
+  // attributes?: CredentialPreviewAttribute[] Q: Can we move that here as I don't see anything format specific about these
   connectionId: string
   protocolVersion: CredentialProtocolVersion
   credentialFormats: ProposeCredentialFormats

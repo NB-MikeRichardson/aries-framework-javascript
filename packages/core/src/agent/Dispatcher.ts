@@ -86,6 +86,10 @@ class Dispatcher {
   }
 
   public getMessageClassForType(messageType: string): typeof AgentMessage | undefined {
+
+    console.log("---------------------------> Got a load of handlers....", this.handlers)
+
+
     for (const handler of this.handlers) {
       for (const MessageClass of handler.supportedMessages) {
         if (MessageClass.type === messageType) return MessageClass

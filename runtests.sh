@@ -12,10 +12,12 @@ fi
 
 if [[ "$1" == "--clean" ]]
 then
-  	echo "cleaning Indy Wallet..."
+  echo "cleaning Indy Wallet..."
 	rm -rf ~/.indy_client
+  exit
 elif [[ -n "$1" ]]
 then
+  tests = $1
   echo "run tests in $1"
 else
   echo "Running all tests..."
@@ -38,15 +40,15 @@ docker exec indy-pool add-did-from-seed 000000000000000000000000Trustee9 TRUSTEE
 # Run all tests
 # You can run the tests using the following command.
 
-if [[ -n "$1" ]]
+if [[ -n "$tests" ]]
 then
   echo "===================================================="
-  echo ">>>>> run tests in $1 <<<<<"
+  echo ">>>>> run tests in $tests <<<<<"
   echo "===================================================="
 
 fi
 
-yarn test $1
+yarn test $tests
 
 # to run ony files in a specific folder use something like the following example:
 #yarn test ./packages/core/src/modules/credentials/__tests__

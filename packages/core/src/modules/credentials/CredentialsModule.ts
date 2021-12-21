@@ -67,6 +67,11 @@ export class CredentialsModule {
   //   const { message, credentialRecord } = await this.credentialService.createProposal(connection, config)
 
   //   const outbound = createOutboundMessage(connection, message)
+
+
+  //   console.log(">>>>>>>>>>>>>>>>>>>>> OLD V1 MESSAGE <<<<<<<<<<<<<<<<<<<<<<<<<<")
+  //   console.log(outbound)
+
   //   await this.messageSender.sendMessage(outbound)
 
   //   return credentialRecord

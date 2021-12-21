@@ -7,7 +7,7 @@ import { AgentMessage } from '../../../../agent/AgentMessage'
 import { Attachment } from '../../../../decorators/attachment/Attachment'
 import { JsonEncoder } from '../../../../utils/JsonEncoder'
 
-import { CredentialPreview } from './CredentialPreview'
+import { CredentialPreview } from '../../CredentialPreview'
 
 export const INDY_CREDENTIAL_OFFER_ATTACHMENT_ID = 'libindy-cred-offer-0'
 

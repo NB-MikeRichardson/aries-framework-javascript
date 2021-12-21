@@ -13,16 +13,15 @@ import { ProposeCredentialOptions } from '../src/modules/credentials/v2/interfac
 
 import { CredentialRole } from '../src/modules/credentials/v2/CredentialRole';
 
-import { JsonTransformer } from '../src/utils/JsonTransformer'
 import { LinkedAttachment } from '../src/utils/LinkedAttachment'
 
 import { setupCredentialTests, waitForCredentialRecord } from './helpers'
 import testLogger from './logger'
-import { ConsoleLogger, LogLevel } from '../src/logger'
+import { unitTestLogger, ConsoleLogger, LogLevel } from '../src/logger'
 
-const logger = new ConsoleLogger(LogLevel.debug)
+// const logger = new ConsoleLogger(LogLevel.debug)
 
-const credentialPreview = CredentialPreview.fromRecord({
+let credentialPreview = CredentialPreview.fromRecord({
   name: 'John',
   age: '99',
 })
@@ -85,11 +84,11 @@ describe('credentials', () => {
       },
       comment: "v1 propose credential test"
     }
-    logger.debug("ProposeCredentialOptions indy proposeOptions attributes = ", proposeOptions.credentialFormats.indy?.attributes)
+    console.log("TEST1......")
+    unitTestLogger("ProposeCredentialOptions indy proposeOptions attributes = ", proposeOptions.credentialFormats.indy?.attributes)
 
     let credentialExchangeRecord = await aliceAgent.credentials.proposeCredential(proposeOptions)
 
-    logger.debug("CredentialExchangeRecord = ", credentialExchangeRecord)
     expect(credentialExchangeRecord.connectionId).toEqual(proposeOptions.connectionId)
     expect(credentialExchangeRecord.protocolVersion).toEqual(CredentialProtocolVersion.V1_0)
     expect(credentialExchangeRecord.state).toEqual(CredentialState.ProposalSent)
@@ -198,15 +197,17 @@ describe('credentials', () => {
     //   state: CredentialState.Done,
     // })
 
-    testLogger.test('Alice sends (v2, Indy) credential proposal to Faber')
-    proposeOptions.protocolVersion = CredentialProtocolVersion.V2_0
-    proposeOptions.comment = "v2 Indy propose credential test"
-
-    credentialExchangeRecord = await aliceAgent.credentials.proposeCredential(proposeOptions)
-
   })
 
+
+  // -------------------------- V2 TEST BEGIN --------------------------------------------
+
   test('Alice starts with V2 credential proposal to Faber', async () => {
+
+    let credentialPreview = CredentialPreview.fromRecord({
+      name: 'John',
+      age: '99',
+    }, CredentialProtocolVersion.V2_0)
     testLogger.test('Alice sends (v2) credential proposal to Faber')
     // set the propose options
     // we should set the version to V1.0 and V2.0 in separate tests, one as a regression test
@@ -240,18 +241,20 @@ describe('credentials', () => {
 
     let credentialExchangeRecord = await aliceAgent.credentials.proposeCredential(proposeOptions)
 
-    logger.debug("CredentialExchangeRecord = ", credentialExchangeRecord)
     expect(credentialExchangeRecord.connectionId).toEqual(proposeOptions.connectionId)
     expect(credentialExchangeRecord.protocolVersion).toEqual(CredentialProtocolVersion.V2_0)
     expect(credentialExchangeRecord.state).toEqual(CredentialState.ProposalSent)
     expect(credentialExchangeRecord.role).toEqual(CredentialRole.Holder)
     expect(credentialExchangeRecord.threadId).not.toBeNull()
 
-    testLogger.test('Faber waits for credential proposal from Alice')
-    let faberCredentialRecord = await waitForCredentialRecord(faberAgent, {
-      threadId: credentialExchangeRecord.threadId,
-      state: CredentialState.ProposalReceived,
-    })
+    // testLogger.test('Faber waits for credential proposal from Alice')
+    // let faberCredentialRecord = await waitForCredentialRecord(faberAgent, {
+    //   threadId: credentialExchangeRecord.threadId,
+    //   state: CredentialState.ProposalReceived,
+    // })
+
+    // -------------------------- V2 TEST END --------------------------------------------
+
 
     // testLogger.test('Faber sends credential offer to Alice')
     // faberCredentialRecord = await faberAgent.credentials.acceptProposal(faberCredentialRecord.id, {
@@ -349,7 +352,7 @@ describe('credentials', () => {
     //   state: CredentialState.Done,
     // })
 
-   
+
 
   })
 

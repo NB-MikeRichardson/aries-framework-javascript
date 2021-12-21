@@ -17,7 +17,7 @@ import { AriesFrameworkError } from '../error'
 import { BasicMessagesModule } from '../modules/basic-messages/BasicMessagesModule'
 import { ConnectionsModule } from '../modules/connections/ConnectionsModule'
 import { CredentialsModule } from '../modules/credentials/CredentialsModule'
-import { CredentialAPI } from '../modules/credentials/CredentialService' // for now, move the API class
+import { CredentialsAPI } from '../modules/credentials/CredentialsAPI' // for now, move the API class
 import { DiscoverFeaturesModule } from '../modules/discover-features'
 import { LedgerModule } from '../modules/ledger/LedgerModule'
 import { ProofsModule } from '../modules/proofs/ProofsModule'
@@ -52,7 +52,7 @@ export class Agent {
   public readonly basicMessages!: BasicMessagesModule
   public readonly ledger!: LedgerModule
   // public readonly credentials!: CredentialsModule
-  public readonly credentials!: CredentialAPI
+  public readonly credentials!: CredentialsAPI
 
   public readonly mediationRecipient!: RecipientModule
   public readonly mediator!: MediatorModule
@@ -98,7 +98,7 @@ export class Agent {
 
     // We set the modules in the constructor because that allows to set them as read-only
     this.connections = this.container.resolve(ConnectionsModule)
-    this.credentials = this.container.resolve(CredentialAPI)
+    this.credentials = this.container.resolve(CredentialsAPI)
     // this.credentials = this.container.resolve(CredentialsModule)
 
     this.proofs = this.container.resolve(ProofsModule)
