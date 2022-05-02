@@ -22,13 +22,11 @@ import { EventEmitter } from '../../../agent/EventEmitter'
 import { AgentEventTypes } from '../../../agent/Events'
 import { MessageSender } from '../../../agent/MessageSender'
 import { createOutboundMessage } from '../../../agent/helpers'
-import { KeyType } from '../../../crypto'
+import { Key, KeyType } from '../../../crypto'
 import { AriesFrameworkError } from '../../../error'
 import { injectable } from '../../../plugins'
 import { JsonTransformer } from '../../../utils'
 import { ConnectionService } from '../../connections/services/ConnectionService'
-import { Key } from '../../dids'
-import { didKeyToVerkey } from '../../dids/helpers'
 import { ProblemReportError } from '../../problem-reports'
 import { RoutingEventTypes } from '../RoutingEvents'
 import { RoutingProblemReportReason } from '../error'
@@ -43,6 +41,7 @@ import { KeylistUpdate, KeylistUpdateMessage } from '../messages/KeylistUpdateMe
 import { MediationRole, MediationState } from '../models'
 import { MediationRecord } from '../repository/MediationRecord'
 import { MediationRepository } from '../repository/MediationRepository'
+import { didKeyToVerkey } from '../../dids/helpers'
 
 @injectable()
 export class MediationRecipientService {
