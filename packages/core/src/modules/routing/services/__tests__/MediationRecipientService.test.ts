@@ -16,6 +16,7 @@ import { DidExchangeState } from '../../../connections'
 import { ConnectionRepository } from '../../../connections/repository/ConnectionRepository'
 import { ConnectionService } from '../../../connections/services/ConnectionService'
 import { DidRepository } from '../../../dids/repository/DidRepository'
+import { RecipientModuleConfig } from '../../RecipientModuleConfig'
 import {
   DeliveryRequestMessage,
   MediationGrantMessage,
@@ -100,7 +101,8 @@ describe('MediationRecipientService', () => {
       connectionService,
       messageSender,
       mediationRepository,
-      eventEmitter
+      eventEmitter,
+      new RecipientModuleConfig()
     )
   })
 
