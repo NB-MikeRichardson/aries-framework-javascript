@@ -108,11 +108,9 @@ describe('Present Proof', () => {
     })
 
     // Faber accepts the presentation provided by Alice
-    testLogger.test('Faber accepts the presentation provided by Alice')
     await faberAgent.proofs.acceptPresentation(faberProofExchangeRecord.id)
 
     // Alice waits until she received a presentation acknowledgement
-    testLogger.test('Alice waits until she receives a presentation acknowledgement')
     await aliceProofExchangeRecordPromise
 
     const formatData = await faberAgent.proofs.getFormatData(faberProofExchangeRecord.id)
