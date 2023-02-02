@@ -1,0 +1,1 @@
+yarn test ./packages/core/src/modules/credentials/protocol/v2/__tests__/v2.multiformat-demo-2.test.ts
